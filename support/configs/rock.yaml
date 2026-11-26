@@ -1,15 +1,15 @@
 # Rock Configuration（能力全局化，数据项目化）
-# 能力层（全局，装一次）：/c/Users/QZ/.pi/agent/packages/rock-research-agent/support/
+# 能力层（全局，装一次）：~/.pi/agent/packages/rock-research-agent/support/
 # 数据层（每项目一套）：~/Research-projects/<项目>/
 # 路径变量：${PROJECT_ROOT} = Agent 当前工作目录（项目文件夹）
 
 # ── 全局能力层（固定，不随项目复制）──
 capability:
-  extensions_root: /c/Users/QZ/.pi/agent/packages/rock-research-agent/support
-  research_core: /c/Users/QZ/.pi/agent/extensions/rock-research
-  skills_dir: /c/Users/QZ/.pi/agent/skills           # 8 个 skill，软链到 ~/.pi/agent/skills/
-  scripts_dir: /c/Users/QZ/.pi/agent/packages/rock-research-agent/support/scripts          # 桥接/维护脚本（逐项目执行）
-  configs_dir: /c/Users/QZ/.pi/agent/packages/rock-research-agent/support/configs
+  extensions_root: ~/.pi/agent/packages/rock-research-agent/support
+  research_core: ~/.pi/agent/extensions/rock-research
+  skills_dir: ~/.pi/agent/skills           # 8 个 skill，软链到 ~/.pi/agent/skills/
+  scripts_dir: ~/.pi/agent/packages/rock-research-agent/support/scripts          # 桥接/维护脚本（逐项目执行）
+  configs_dir: ~/.pi/agent/packages/rock-research-agent/support/configs
   pi_global: ~/.pi                                       # Pi 自身全局状态 (agent/rag/wechat)
 
 # ── 数据层（项目相对，切换项目即切换整套数据）──

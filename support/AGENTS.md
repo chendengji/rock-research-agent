@@ -11,7 +11,7 @@
 1. **本地优先**：始终优先使用本地数据（论文 PDF、research.db、RAG 索引），模型内部知识只作线索、不作证据
 2. **可追溯**：每个结论都必须追溯到来源（论文、段落、页码），不能凭空断言
 3. **诚实标注**：输出必须遵循标签协议，明确标注是 FACT / SYNTHESIS / INTERPRETATION / HYPOTHESIS / IDEA / UNVERIFIED（见「输出标签协议」）
-4. **单项目全局（唯一项目根）**：全系统只服务一个项目，由 `ROCK_PROJECT_ROOT` 环境变量指定（如 `C:\Users\QZ\Documents\literature-review`）；文献库（`paper-raw/` + `.pi/rag/rag.db`）与业务库（`data/research.db`）**同根**；知识库工具（paper_search/paper_read）与维护脚本（rag_rebuild/ingest）默认读它而非 cwd。**文献库默认只读，禁止任何写入/修改**（见「禁止事项」第 8 条红线）
+4. **单项目全局（唯一项目根）**：全系统只服务一个项目，由 `ROCK_PROJECT_ROOT` 环境变量指定（如 `~/Documents/literature-review`）；文献库（`paper-raw/` + `.pi/rag/rag.db`）与业务库（`data/research.db`）**同根**；知识库工具（paper_search/paper_read）与维护脚本（rag_rebuild/ingest）默认读它而非 cwd。**文献库默认只读，禁止任何写入/修改**（见「禁止事项」第 8 条红线）
 5. **业务库唯一**：项目业务数据（claim/idea/hypothesis）在 `ROCK_PROJECT_ROOT/data/research.db`，全局唯一、**不按 cwd 隔离、无跨项目切换**——文献库与业务库同根但职责分明（文献库只读、业务库可写）
 6. **主动提醒**：你是一个聪明的助手，应当主动、及时地为用户提建议，基于知识库为用户提思路。
 7. **善用开源生态（复用优先，避免从头造车）**：遇到难以解决的问题时，应主动先检索 GitHub / pi 插件市场 / MCP 服务器 / PyPI-npm 生态，看有无**现成或可改造**的工具；**利用或改造他人工具比从头造车更轻松、成功率更高**。GitHub 令牌 `github_api_token` 已存于用户 `~/.env`（只从环境变量读入，见「禁止事项」第 3 条：不落盘、不打印、不写记忆、不发给无关服务），可按需调用 GitHub 检索 API 适时检索。复用/改造时：
@@ -81,7 +81,7 @@
 6. **禁止无出处断言**。所有结论必须标注 FACT / SYNTHESIS / INTERPRETATION / HYPOTHESIS / IDEA / UNVERIFIED 并给出可追溯来源；本地查不到就标 UNVERIFIED，不得用模型内部知识充当证据。
 7. **禁止重复入库/重复抽取**。入库前核对 `paper-raw/` 是否已有同名解析 JSON；写 claim 前按 (text, file_path) 查重，发现重复先合并而不是追加。
 8. **禁止写入/修改文献库（所有文献库只读红线，最高优先级）**。用户的全部文献库**默认只读，禁止任何写入、修改、移动、重命名、复制、删除**；写入仅限用户明确触发且获同意的知识库维护操作：
-   - **论文源目录（原始 PDF 库）** `<论文源目录>`（环境变量 `ROCK_PAPER_SOURCE_DIR`，如 `C:\Users\QZ\Downloads\文献`）：**绝对只读**——不创建任何工作/暂存/备份目录（如 `_pending_ocr`、`.backup_duplicate`、`x_scan`、`skip_same_copy` 等），不移动/重命名/复制/覆盖/删除任何 PDF，不产生 0 字节或损坏文件；该目录只做**读取**（`paper_search`/`paper_read`/`ingest_pdf.py` 解析读取/直接查库）
+   - **论文源目录（原始 PDF 库）** `<论文源目录>`（环境变量 `ROCK_PAPER_SOURCE_DIR`，如 `~/Downloads/文献`）：**绝对只读**——不创建任何工作/暂存/备份目录（如 `_pending_ocr`、`.backup_duplicate`、`x_scan`、`skip_same_copy` 等），不移动/重命名/复制/覆盖/删除任何 PDF，不产生 0 字节或损坏文件；该目录只做**读取**（`paper_search`/`paper_read`/`ingest_pdf.py` 解析读取/直接查库）
    - **文献库知识库** `ROCK_PROJECT_ROOT`（`paper-raw/` 解析 JSON、`.pi/rag/rag.db` 索引）：只读原则，写入仅限用户明确触发的维护（入库 `ingest_pdf.py` → 解析 JSON；建索引 `rag_rebuild.mjs --clean` → rag.db；抽取 claim → research.db），**必须由用户命令触发，不得自动、批量静默进行**；这些写入绝不触碰论文源目录
    - 一切入库/OCR/去重流程的**临时工作区必须放在文献库之外或知识库自有目录**（如 `ROCK_PROJECT_ROOT/paper-raw/`、`.pi/`、独立临时目录），严禁在论文源目录内落地任何中间产物
    - 用户源 PDF 的移动/整理/去重由**用户自己**执行（此前 `_pending_ocr`、`.backup_duplicate` 是用户手动组织的，agent 不得代劳、不得再生成同类目录）
@@ -91,7 +91,7 @@
 **单项目全局结构**：`ROCK_PROJECT_ROOT` 环境变量指定唯一项目根，文献库与业务库同根。
 
 ```
-# 唯一项目根（ROCK_PROJECT_ROOT 环境变量指定，如 C:\Users\QZ\Documents\literature-review）：
+# 唯一项目根（ROCK_PROJECT_ROOT 环境变量指定，如 ~/Documents/literature-review）：
 <ROCK_PROJECT_ROOT>/
 ├── paper-raw/          ← 论文 PDF + 解析 JSON（ingest_pdf.py 入库，PDF 来自唯一数据源 <论文源目录>，ROCK_PAPER_SOURCE_DIR 指定）
 ├── .pi/rag/rag.db   ← RAG 索引（rag_rebuild.mjs --clean 生成；chunks/files 表在此库，无独立 papers.db）
@@ -342,7 +342,7 @@
 - **OCR 环境**：运行器动态选择、不写死环境名/路径，详见「禁止事项」第 1 条（可用 `OCR_PYTHON` 环境变量显式指定，如 `uv run --with paddleocr python` 或 `conda run -n <环境名> python`）
 - **绘图环境**：绘图引擎（原 sci-plot，现 `support/plot/`）自带环境 `support/plot/.venv`（uv 建，依赖 matplotlib/numpy/pandas/scienceplots），**环境跟归属目录走**，不集中堆放、不设全局 Python 变量；引擎目录无 `.venv` 时用 `uv run --directory <引擎目录> python` 自动建。
 - **知识库（论文库）——所有文献库只读红线**：`ROCK_PROJECT_ROOT` 指向唯一项目根，文献库在 `paper-raw/`，知识库工具（paper_search/paper_read）与维护脚本（rag_rebuild/ingest）默认读它而非 cwd——使用前确认它指向项目根，否则会在当前目录找库致无命中；**论文入库唯一数据源** `<论文源目录>`（环境变量指定，如 `ROCK_PAPER_SOURCE_DIR`），ingest 解析到 `paper-raw/` 后须 rag_rebuild 重建索引。文献库勿混入其他类型文档（专利、报告等）。**只读红线详见「禁止事项」第 8 条：agent 对论文源目录只读取、不写入。**
-- **项目路径**：`ROCK_PROJECT_ROOT` 全局环境变量指定（如 `C:\Users\QZ\Documents\literature-review`），全系统唯一项目
+- **项目路径**：`ROCK_PROJECT_ROOT` 全局环境变量指定（如 `~/Documents/literature-review`），全系统唯一项目
 - **数据**：
   - **文献库（知识库）**：`ROCK_PROJECT_ROOT/paper-raw/`（解析 JSON）+ `ROCK_PROJECT_ROOT/.pi/rag/rag.db`（RAG 索引，由 `rag_rebuild.mjs` 生成，无独立 papers.db）；唯一源 PDF 在 `<论文源目录>`（`ROCK_PAPER_SOURCE_DIR` 指定，**只读红线见「禁止事项」第 8 条**）
   - **业务库**：`ROCK_PROJECT_ROOT/data/research.db`（claim/evidence/idea/hypothesis）

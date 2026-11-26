@@ -48,7 +48,7 @@ text, comment, color, color_category, tags, created, modified, source
 
 ## 3. 几何：读库补 rect（`ann_geom.py`）
 
-Zotero 库：`C:\Users\QZ\Documents\Zotero\zotero.sqlite`（可用 `ZOTERO_DATA_DIR` 覆盖）。
+Zotero 库：`~/Documents/Zotero/zotero.sqlite`（可用 `ZOTERO_DATA_DIR` 覆盖）。
 Zotero 运行时库被锁 → 脚本先把 `zotero.sqlite` + `-wal` + `-shm` 复制到临时目录再读，**永远不写原库**。
 
 坐标系换算（最容易错的一步）：
