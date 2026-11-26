@@ -1,0 +1,19 @@
+{
+  "name": "rock-research",
+  "version": "0.1.0",
+  "description": "Rock Research Core — claim verification, evidence tracing, conflict analysis, idea/hypothesis management for Pi agent",
+  "type": "module",
+  "main": "./index.ts",
+  "exports": {
+    "..": "./index.ts"
+  },
+  "files": [
+    "index.ts",
+    "tools/**/*.ts",
+    "db/**/*.ts",
+    "db/**/*.sql",
+    "services/**/*.ts",
+    "README.md"
+  ],
+  "license": "MIT"
+}

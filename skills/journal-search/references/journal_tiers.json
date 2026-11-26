@@ -1,0 +1,113 @@
+{
+  "tiers": {
+    "0": {
+      "label": "岩石力学核心",
+      "score": 35,
+      "journals": [
+        {"name": "Rock Mechanics and Rock Engineering", "abbr": "RMRE", "issn": "0723-2632"},
+        {"name": "International Journal of Rock Mechanics and Mining Sciences", "abbr": "IJRMMS", "issn": "1365-1609"},
+        {"name": "Acta Geotechnica", "abbr": "AG", "issn": "1861-1133"},
+        {"name": "Journal of Rock Mechanics and Geotechnical Engineering", "abbr": "JRMGE", "issn": "1674-7755"}
+      ]
+    },
+    "1": {
+      "label": "岩土工程核心",
+      "score": 28,
+      "journals": [
+        {"name": "Computers and Geotechnics", "abbr": "CG", "issn": "0266-352X"},
+        {"name": "Geotextiles and Geomembranes", "abbr": null, "issn": "0266-1144"},
+        {"name": "Geotechnique", "abbr": null, "issn": "0016-8505"},
+        {"name": "Journal of Geotechnical and Geoenvironmental Engineering", "abbr": "JGGE", "issn": "1090-0241"},
+        {"name": "International Journal of Geomechanics", "abbr": "IJOG", "issn": "1532-3641"},
+        {"name": "International Journal for Numerical and Analytical Methods in Geomechanics", "abbr": "NAG", "issn": "0363-9061"},
+        {"name": "Canadian Geotechnical Journal", "abbr": "CGJ", "issn": "0008-3674"},
+        {"name": "Soils and Foundations", "abbr": null, "issn": "0038-0806"}
+      ]
+    },
+    "2": {
+      "label": "工程地质与灾害",
+      "score": 20,
+      "journals": [
+        {"name": "Engineering Geology", "abbr": "EG", "issn": "0013-7952"},
+        {"name": "Landslides", "abbr": null, "issn": "1612-510X"},
+        {"name": "Bulletin of Engineering Geology and the Environment", "abbr": "BEGE", "issn": "1437-6282"}
+      ]
+    },
+    "2b": {
+      "label": "地下工程与隧道",
+      "score": 20,
+      "journals": [
+        {"name": "Tunnelling and Underground Space Technology", "abbr": "TUST", "issn": "0886-7798"}
+      ]
+    },
+    "2c": {
+      "label": "断裂力学与动力学",
+      "score": 20,
+      "journals": [
+        {"name": "Engineering Fracture Mechanics", "abbr": "EFM", "issn": "0013-7944"},
+        {"name": "Soil Dynamics and Earthquake Engineering", "abbr": "SDEE", "issn": "0267-7261"}
+      ]
+    },
+    "2d": {
+      "label": "能源岩土力学",
+      "score": 20,
+      "journals": [
+        {"name": "Geomechanics and Geophysics for Geo-Energy and Geo-Resources", "abbr": "G4", "issn": "2363-4357"}
+      ]
+    },
+    "3": {
+      "label": "中文核心·三岩",
+      "score": 25,
+      "journals": [
+        {"name": "岩石力学与工程学报", "abbr": null, "issn": null},
+        {"name": "岩土力学", "abbr": null, "issn": null},
+        {"name": "岩土工程学报", "abbr": null, "issn": null}
+      ]
+    },
+    "4": {
+      "label": "其他中文期刊",
+      "score": 10,
+      "journals": [
+        {"name": "土木工程学报", "abbr": null, "issn": null},
+        {"name": "工程地质学报", "abbr": null, "issn": null},
+        {"name": "煤炭学报", "abbr": null, "issn": null},
+        {"name": "水利学报", "abbr": null, "issn": null}
+      ]
+    }
+  },
+  "aliases": {
+    "RMRE": "Rock Mechanics and Rock Engineering",
+    "IJRMMS": "International Journal of Rock Mechanics and Mining Sciences",
+    "JRMGE": "Journal of Rock Mechanics and Geotechnical Engineering",
+    "AG": "Acta Geotechnica",
+    "CG": "Computers and Geotechnics",
+    "JGGE": "Journal of Geotechnical and Geoenvironmental Engineering",
+    "IJOG": "International Journal of Geomechanics",
+    "NAG": "International Journal for Numerical and Analytical Methods in Geomechanics",
+    "CGJ": "Canadian Geotechnical Journal",
+    "EG": "Engineering Geology",
+    "TUST": "Tunnelling and Underground Space Technology",
+    "EFM": "Engineering Fracture Mechanics",
+    "SDEE": "Soil Dynamics and Earthquake Engineering",
+    "BEGE": "Bulletin of Engineering Geology and the Environment",
+    "G4": "Geomechanics and Geophysics for Geo-Energy and Geo-Resources",
+    "三岩": "岩石力学与工程学报, 岩土力学, 岩土工程学报"
+  },
+  "fuzzy_matches": {
+    "rock mech rock eng": "Rock Mechanics and Rock Engineering",
+    "int j rock mech min": "International Journal of Rock Mechanics and Mining Sciences",
+    "j rock mech geotech": "Journal of Rock Mechanics and Geotechnical Engineering",
+    "acta geotech": "Acta Geotechnica",
+    "comput geotech": "Computers and Geotechnics",
+    "j geotech geoenviron": "Journal of Geotechnical and Geoenvironmental Engineering",
+    "int j geomech": "International Journal of Geomechanics",
+    "int j numer anal meth": "International Journal for Numerical and Analytical Methods in Geomechanics",
+    "can geotech j": "Canadian Geotechnical Journal",
+    "eng geol": "Engineering Geology",
+    "tunn undergr sp tech": "Tunnelling and Underground Space Technology",
+    "eng fract mech": "Engineering Fracture Mechanics",
+    "soil dyn earthq eng": "Soil Dynamics and Earthquake Engineering",
+    "bull eng geol environ": "Bulletin of Engineering Geology and the Environment",
+    "geomech geophys geo-energy": "Geomechanics and Geophysics for Geo-Energy and Geo-Resources"
+  }
+}

@@ -1,0 +1,15 @@
+[project]
+name = "experimental-analysis-skill"
+version = "1.0.0"
+description = "Support environment for experimental-analysis skill (stress-strain, AE, RA-AF, energy, fitting, visualization)"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.26",
+  "pandas>=2.1",
+  "scipy>=1.11",
+  "matplotlib>=3.8",
+  "seaborn>=0.13",
+]
+
+[tool.uv]
+package = false

@@ -1,0 +1,40 @@
+# Rock Source Quality Tiers
+# Used to weight evidence during claim verification and citation checks.
+# Combined fields, not a simple journal-IF ranking.
+
+tiers:
+  - id: local_pdf_peer_reviewed
+    weight: 1.0
+    requires: [local_full_text, peer_reviewed]
+
+  - id: local_pdf_preprint
+    weight: 0.7
+    requires: [local_full_text]
+
+  - id: local_metadata_only
+    weight: 0.5
+    requires: [local_metadata]
+
+  - id: trusted_external
+    weight: 0.6
+    sources: [OpenAlex, SemanticScholar, OnePetro, GeoRef, CNKI]
+
+  - id: external_snippet
+    weight: 0.3
+    note: "Search snippet only — usable for leads, not final evidence"
+
+  - id: model_internal
+    weight: 0.0
+    note: "Never usable as evidence — leads only"
+
+# Recommended core journals for rock mechanics (high weight context)
+core_journals:
+  - "International Journal of Rock Mechanics and Mining Sciences"
+  - "Rock Mechanics and Rock Engineering"
+  - "Engineering Geology"
+  - "Tunnelling and Underground Space Technology"
+  - "Computers and Geotechnics"
+  - "Journal of Geophysical Research: Solid Earth"
+  - "岩石力学与工程学报"
+  - "岩土工程学报"
+  - "岩土力学"

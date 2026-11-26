@@ -1,0 +1,51 @@
+# 依赖（npm install / uv sync 重建，不打包）
+node_modules/
+**/node_modules/
+.venv/
+**/.venv/
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 模型（公开可下载，不打包）
+*.onnx
+*.bin
+*.safetensors
+*.gguf
+huggingface/
+
+# 数据 / 数据库
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+data/
+backups/
+
+# 日志 / 临时
+*.log
+logs/
+*.tmp
+.tmp/
+.dream_tmp/
+
+# 敏感（防御性双保险）
+.env
+.env.*
+*.pem
+*.key
+*_API_KEY*
+token*
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 废弃/回收站目录（不打包；git 不匹配点开头目录，用 .trash-* 字面+通配）
+.trash-plot-skill/
+.trash-synapse-20261024/
+**/.trash-*/

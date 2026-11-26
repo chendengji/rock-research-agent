@@ -1,0 +1,31 @@
+{
+  "name": "rock-research-agent",
+  "version": "0.1.0",
+  "description": "Rock research agent for Pi — research tools, journal search, scripts, and skills",
+  "type": "module",
+  "keywords": [
+    "pi-package",
+    "rock",
+    "research",
+    "agent"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@xenova/transformers": "^2.17.2",
+    "better-sqlite3": "^12.11.1",
+    "sqlite-vec": "^0.1.9"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "typebox": "*"
+  },
+  "pi": {
+    "extensions": [
+      "./extensions/rock-research",
+      "./extensions/rock-journal-search"
+    ],
+    "skills": [
+      "./skills"
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "rock-journal-search",
+  "version": "0.1.0",
+  "description": "Rock Journal Search — priority-ranked literature search across official APIs",
+  "type": "module",
+  "main": "./index.ts",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "files": [
+    "index.ts",
+    "README.md"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,97 @@
+# Rock Style Profiles
+#
+# Abstract writing-structure profiles extracted from target journals.
+# Used by academic-writing skill for evidence-backed writing guidance.
+# 
+# These are NOT sentence templates. They capture:
+#   sentence_length, hedging, claim-evidence pattern,
+#   discussion structure, limitation expression
+
+profiles:
+  - name: diederichs2003
+    display: "Diederichs (2003) RMRE Rocha Medal — Rock Fracture and Collapse Under Low Confinement Conditions"
+    source: "Rock Mech. Rock Eng. 36(5):339-381, DOI 10.1007/s00603-003-0015-y"
+    measured: "avgsent: abstract 28.8w / intro 25.5w / concl 23.2w; hedging ~0.1-0.2 per 100w (极低); citation 57x (author-year); transitions: however 10, therefore 5, as a result 5, in addition 4"
+    traits:
+      sentence_length: "long, layered (20-32w avg) — 主句后接 2-4 层限定：括号插入 + 关系从句 + 分词短语"
+      hedging: "very low — 作者对自有结论用 assertive 语气；hedging 仅用于他人成果或不确定的 field 条件"
+      claim_evidence_pattern: "mechanism-to-quantification — 先给机制判断，再回指实验/计算证据，最后落到设计指标"
+      discussion_structure: "二分框架 — structurally controlled gravity driven vs strength controlled stress driven；每节先定性再定量"
+      limitation_expression: "inline scoping — 开篇即排除范围（'not considered here'），限制随论证内嵌给出"
+      transition_pattern: "logical-contrast — however / therefore / as a result / in addition；段落以 topic sentence 起头"
+      citation_placement: "author-year bracketed — 句中 70% / 句末 30%，'described theoretically by X (year)'"
+      figure_use: "argument-carrying — 图表是论证支柱，每 2-3 段回指一次；'Figure N illustrates/shows'，'is generalized to be independent of'"
+    signature_moves:
+      - "二分开场：'X can be classified as A ... or as B'"
+      - "括号内嵌术语：'tensile damage and confinement reduction (or stress relaxation)'"
+      - "量化让步：'even a relatively small percentage (e.g. less than 1%) can ...'"
+      - "条件限定：'may be sensitive to ... but can be relied upon for ...'"
+      - "自引收敛：'A brief summary of key findings of Diederichs (2000) is presented here'"
+    terminology:
+      damage_mechanics: ["tensile damage", "confinement reduction", "stress relaxation", "spalling", "damage initiation and propagation", "crack intensity", "damage threshold"]
+      structural: ["structurally controlled", "gravity driven", "strength controlled", "stress driven", "rock bridges", "intact rock bridges", "joint-coplanar area", "persistence", "non-persistent jointing", "ubiquitous structure"]
+      failure_modes: ["groundfall potential", "rockmass yield", "wedge stability", "modified voussoir beam", "fallout", "squeezing conditions", "excavation response"]
+      methods: ["discrete element simulation", "fracture mechanics approach", "statistical theory", "semi-empirical design guidelines", "limit equilibrium", "analytical and numerical analogues"]
+      rockmass: ["hard rockmass", "massive to moderately jointed", "in situ stress", "degree of jointing", "intact rock bridges", "internal/self-supporting load carrying capacity"]
+      support: ["primary support", "first-pass application", "heavy support systems", "distributed load capacity", "short-term support", "excavation cycling", "development and stope extraction"]
+    abstract_profile:
+      structure: ["Objective (1句: primary objective was an examination of)", "Scope (1-2句: examined with respect to A as well as B)", "Gap (1句: in conventional analysis ... are typically neglected, leading to erroneous ...)", "Method (1句: examined through review of + case study + analogues)", "Contribution (1句: updates, validates and constrains ...)"]
+      length_words: "170-180"
+      keywords: true
+    note: "Rocha Medal 获奖综述体；非标准 research paper——以机制论证为主线，数据来自作者先前博士工作(Diederichs 2000)"
+
+  - name: ijmrms
+    display: "International Journal of Rock Mechanics and Mining Sciences"
+    traits:
+      sentence_length: "medium (18-25 words avg)"
+      hedging: "moderate — uses 'suggests', 'indicates', 'is consistent with'"
+      claim_evidence_pattern: "explicit — 'We found that X... supporting the hypothesis that...'"
+      discussion_structure: "mechanism-first, then comparison to prior work"
+      limitation_expression: "direct and brief — one paragraph near end of discussion"
+      transition_pattern: "logical connectors: 'however', 'furthermore', 'in contrast'"
+      citation_placement: "integrated — 'as shown by [ref]' or end-of-sentence"
+    abstract_profile:
+      structure: ["Background (1-2 sentences)", "Method (2-3)", "Key results (2-3)", "Implication (1-2)"]
+      length_chars: "200-300"
+
+  - name: rmre
+    display: "Rock Mechanics and Rock Engineering"
+    traits:
+      sentence_length: "medium-long (20-30 words avg)"
+      hedging: "conservative — prefers 'indicate', 'appear to', 'may be attributed to'"
+      claim_evidence_pattern: "data-anchored — 'The test results demonstrate that...'"
+      discussion_structure: "thematic — organized by key finding rather than chronological"
+      limitation_expression: "integrated into discussion rather than separate section"
+      transition_pattern: "result-driven — 'Figure X shows...', 'Table Y summarizes...'"
+      citation_placement: "predominantly end-of-sentence bracketed"
+    abstract_profile:
+      structure: ["Problem statement (1-2)", "Experimental approach (1-2)", "Key findings (3-4)", "Conclusion (1)"]
+      length_chars: "200-300"
+
+  - name: yanshi
+    display: "岩石力学与工程学报"
+    traits:
+      sentence_length: "medium (15-25 characters per clause)"
+      hedging: "low — prefers definitive statements with conditional clauses"
+      claim_evidence_pattern: "result-then-analysis — '试验结果表明……分析认为……'"
+      discussion_structure: "comparative — 与已有研究对比分析"
+      limitation_expression: "rare — occasionally appears in concluding remarks"
+      transition_pattern: "sequential — 首先……其次……最后……"
+      citation_placement: "numbered — superscript brackets"
+    abstract_profile:
+      structure: ["研究目的 (1句)", "方法 (2-3句)", "结果 (3-4句)", "结论 (1-2句)"]
+      length_chars: "200-350"
+
+  - name: tun
+    display: "Tunnelling and Underground Space Technology"
+    traits:
+      sentence_length: "medium (18-22 words)"
+      hedging: "moderate — practical engineering context reduces hedging"
+      claim_evidence_pattern: "engineering-case-driven — 'Field monitoring data at Project X reveal...'"
+      discussion_structure: "problem-solution — identify practical issue, present solution, validate"
+      limitation_expression: "explicit — separate 'limitations' paragraph common"
+      transition_pattern: "engineering-logic — 'To address this issue...', 'The results indicate that...'"
+      citation_placement: "end-of-sentence brackets"
+    abstract_profile:
+      structure: ["Engineering context (1-2)", "Method (1-2)", "Key results (2-3)", "Practical implication (1-2)"]
+      length_chars: "200-300"

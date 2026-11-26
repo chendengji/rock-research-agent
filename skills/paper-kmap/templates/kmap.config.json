@@ -1,0 +1,31 @@
+{
+  "library_root": "<ROCK_PROJECT_ROOT>",
+  "color_semantics": {
+    "Red": { "role": "critical", "weight": 1.0 },
+    "Orange": { "role": "figure", "weight": 0.9 },
+    "Green": { "role": "support", "weight": 0.8 },
+    "Purple": { "role": "question", "weight": 0.8 },
+    "Blue": { "role": "method", "weight": 0.7 },
+    "Magenta": { "role": "idea", "weight": 0.6 },
+    "Yellow": { "role": "general", "weight": 0.5 },
+    "Gray": { "role": "misc", "weight": 0.3 }
+  },
+  "budget": {
+    "nodes": 55,
+    "max_nodes": 60,
+    "depth": 4,
+    "children_per_node": 6,
+    "tree_children": 11,
+    "tree_per_section": 8,
+    "mindmap_branches": 6,
+    "flow_steps": 9
+  },
+  "refocus": {
+    "threshold": 0.35,
+    "keep_top": 55,
+    "unmatched_ratio_max": 0.1,
+    "text_similarity": 0.75
+  },
+  "render": { "size": 1600, "scale": 2, "background": "white" },
+  "ppt": { "width_in": 13.333, "height_in": 7.5, "font": "Microsoft YaHei" }
+}
