@@ -140,6 +140,29 @@ cr rebase <key> --from "0,0,1920,1080"   # 手动指定旧窗口矩形
 
 **改造前先看 `index.json`**：`display.window_rect` 是录制时的窗口几何，对照当前环境即可判断能否直接用。换显示器后建议先 `play --dry-run` 核对描述，再真跑。
 
+### 5.4b 坐标标定（gui_calibrate）——用实测代替假设
+
+**坐标错位的头号根因是「截图像素≠屏幕坐标」的假设**（DPI 缩放、多显示器虚拟原点、窗口未最大化）。`gui_calibrate.py` 用主动标定把它一次量出来，不再靠假设，也不需每次肉眼看图：
+
+```bash
+cd ~/.pi/agent/scripts
+uv run python gui_calibrate.py calibrate --cols 3 --rows 3 --out tf.json
+#   在虚拟桌面布 9 个纯红圆点（点击穿透、置顶），截图后色掩码求质心，仿射拟合
+#   输出 scale/rotation/残差。scale≈1.0 说明 DPI=100%；若 1.25 说明是 125% 缩放
+#   残差 <0.1px 说明映射可靠；否则当前截图/点击坐标系有系统偏差
+uv run python gui_calibrate.py transform 799.5 449.5 --load tf.json
+#   OCR 给的是图像像素框 -> 映射成屏幕坐标用于点击
+uv run python gui_calibrate.py click-check 800 450 --load tf.json
+#   点击前 dry-run 带真值复核：把红点放到打算点击的位置，回投屏幕坐标量偏差
+#   误差 0 = 点下去会正中目标；>2px 说明坐标映射没做对
+```
+
+- **agent 读结果统一加 `--json-out <file>`**：写 UTF-8 JSON 到文件，用 `read` 工具读（免 git-bash 码页乱码）；stdout 只回 `OK -> file`。每个子命令都支持。
+- **找红点用色掩码，不用 OCR**（纯红 R≥200/G≤70/B≤70，求质心，微秒级）；OCR 只读红点**旁**的文字。
+- **红点窗口复用 `wmcp_reminder/flash_overlay` 原语**（穿透+置顶+不抢焦点）；它未设 `WDA_EXCLUDEFROMCAPTURE`，所以红点会被截图捕获——正是标定需要的。
+- **失效域提前声明**：UAC 同意框不允许自动点击、独占全屏软件可能不渲染叠层窗，标定对此不适用。
+- **标定帧与点击帧分离**：红点会污染目标，probe/calibrate 在截图后即销毁红点，再真正点击。
+
 ### 5.5 JSON 字段（自描述规格，改这个比改代码简单）
 
 | 字段 | 作用 |
@@ -196,6 +219,13 @@ python screen_reminder.py status / stop
 - **限速**：MCP 默认 120 次/分钟，超出被 block；重试先 `automation_safety(reset_counters)`。
 - **禁用 opt-in 危险功能**（人脸/键盘记录等）默认关，不要开。
 - **不动用户源目录**：文献库/源 PDF 目录只读，自动化产物一律放工作目录。
+- **工件/临时文件管理**：自动化产物与临时文件分层，绝不散落项目或源目录：
+  - **可复用工件**（标定 `tf.json`、固化脚本）→ `~/.pi/gui-scratch/<日期>/`（项目外、源目录外）；
+  - **一次性临时图片/OCR 文本** → 共享临时区（`%TEMP%`，即 `C:\tmp`），**只动自己的文件**，
+    绝不 `rm` 通配全删——该区可能同时被企业微信等应用写入（实测见过 `wxwork_team.png` 等）；
+  - **每任务用时间戳子目录，任务收尾清理**；
+  - `gui_calibrate.py` 截图 `--png` 只在真要查看像素区域时才存、步骤完成即删；
+    OCR 结果 `--json-out` 才是主产物（免码页乱码，用 `read` 工具读）。
 - **不抢焦点**：所有提醒与自动化都不应用户中断操作；坐标点击前先聚焦目标窗口。
 - **记忆写作防误伤**：不要把 ≥40 字符无空格斜杠串（工具名连写）写进记忆正文/标题——清扫器会把这类串误判为密钥掩码成 `****`。用空格/顿号分隔或拆行。
 
