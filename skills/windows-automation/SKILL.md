@@ -27,6 +27,17 @@ triggers: [窗口, 桌面, 自动化, 点击, 输入, 浏览器, 截图, 录制,
 
 **分支 B 的存在意义正是"分支 A 失效"**：坐标模式不依赖元素树，靠人真点一遍采集真值。
 
+### 坐标真值从哪来（优先级）
+
+分支 B 的"坐标"不只靠人录。四类来源，**能用上面的别用下面的**：
+
+| 优先级 | 来源 | 何时用 |
+|------|------|------|
+| 1 | **人工给定** | 用户明确给了坐标/位置——最准，直接点 |
+| 2 | **主动靶定位**（`gui_calibrate locate`） | 人工没给时；OCR 出框→transform→红点复核，全程不看图（§5.4b） |
+| 3 | **click-recorder 人录** | 流程固定、要重放；需人真点一遍采集真值（§五） |
+| 4 | **被动看图推断** | 最后手段；截图+OCR+肉眼判断，最易幻觉坐标 |
+
 ## 一、工具选型（情况 → 工具）
 
 | 情况 | 工具 | 说明 |
@@ -36,8 +47,9 @@ triggers: [窗口, 桌面, 自动化, 点击, 输入, 浏览器, 截图, 录制,
 | 无元素树软件（工业/工程/自绘/全屏） | **click-recorder**（分支 B） | 录制采集真值 → 升级脚本 |
 | 系统级（启进程/查服务/剪贴板） | MCP `automation_system` | |
 | 文件另存/打开对话框 | MCP `automation_dialog` | 标准对话框优先用，比坐标稳 |
-| 屏幕文字识别 | MCP `automation_visual(extract_text)` | 中文用 chi_sim |
+| 屏幕文字识别 / 定位按钮 | **gui_calibrate scan / locate**（主动靶） | 出结构化坐标 JSON，LLM 不用看图；`automation_visual(extract_text)` 作兜底 |
 | 跨窗口长流程 | MCP `automation_mission`/`automation_task` | 或分支 B 的宏 |
+| 中文输入到 GUI 输入框 | 剪贴板 + `Ctrl+V` | **别用 SendInput Unicode**（自绘编辑器常不认）；MCP `automation_system(clipboard_set)` 或 ctypes；再 Enter 发送 |
 | **有 CLI / REST / API 可用** | **优先用它，别做 GUI 自动化** | GUI 自动化是最后手段，慢且脆 |
 
 ## 二、一般性操作步骤（任何分支通用）
@@ -47,7 +59,7 @@ triggers: [窗口, 桌面, 自动化, 点击, 输入, 浏览器, 截图, 录制,
 3. **定位窗口**：记下句柄；**句柄会失效**（关窗/重开/切标签），操作前必要时重新查。
 4. **聚焦**：确保目标窗口在前台。**聚焦后不要动鼠标/Alt+Tab**，否则坐标错位。
 5. **执行**：分步做，每步做校验（截图或读状态）。
-6. **留证**：关键节点截图存档，便于事后回溯与交用户确认。
+6. **留证**：关键节点截图存档，便于事后回溯与交用户确认；按 §七 的工件分层存放。**不存就是废图，别顺手存**（本会话实测：扫了 4 张 png 结果一张没看，全成了死重）。
 
 ## 三、窗口管理（共性关键）
 
@@ -61,7 +73,7 @@ triggers: [窗口, 桌面, 自动化, 点击, 输入, 浏览器, 截图, 录制,
 
 **只记决策与第一个必踩的坑，工具用法现查社区文档**：
 
-- 参数有两种格式，混用会报 `Validation failed`：**扁平**（`automation_mouse`/`keyboard`/`elements`/`dialog`/`shortcut`/`get_*_state`）vs **嵌套 `{"request":{...}}`**（`automation_windows`/`system`/`visual`/`smart`/`mission`/`task`/`watch`）。先按扁平试，报 schema 错就包一层。
+- 参数格式**以工具 schema 为准，别背清单**。本环境实测：**嵌套 `{"request":{...}}`** = `automation_mouse`/`elements`/`dialog`/`visual`/`windows`/`system`/`shortcut`/`assert`/`get_window_state`/`get_desktop_state`；**扁平** = `automation_smart`/`watch`/`safety`/`approve`/`macro`。报 `Validation failed` 时**先查是否漏包/多包了 `request` 层**（实测 5 个高频工具全是嵌套，扁平试错只会多一轮）。
 - 点击顺序即工作流：有严格先后关系的操作要建模成**有序步骤序列**，每步校验通过再进下一步，某步失败即停，不跳过。
 - 无接管控制流：本环境的 MCP 只做操作与读屏，不做人类接管弹窗。
 
@@ -82,6 +94,8 @@ triggers: [窗口, 桌面, 自动化, 点击, 输入, 浏览器, 截图, 录制,
 **key = `<软件>/<场景>`**（例 `WPS/导出pdf`）。索引项含：软件名、窗口标题、坐标模式、`flow_note`、参数列表、录制时窗口矩形——这些就是"换显示器能不能直接用"的判断依据。
 
 **动手前第一步是检索，不是重新录制**：`search` 能命中既有脚本就直接用/改造；真没有才录。
+> ⚠️ **别把仓库自带的占位当真脚本**：`index.json` 里的 `示例软件/导出pdf`（`window_class=QtWidgets`）是格式示例，
+> `search` 命中它时当作"没脚本"处理，去录新脚本。
 
 ### 5.2 命令
 
@@ -155,6 +169,9 @@ uv run python gui_calibrate.py transform 799.5 449.5 --load tf.json
 uv run python gui_calibrate.py click-check 800 450 --load tf.json
 #   点击前 dry-run 带真值复核：把红点放到打算点击的位置，回投屏幕坐标量偏差
 #   误差 0 = 点下去会正中目标；>2px 说明坐标映射没做对
+uv run python gui_calibrate.py scan --json-out s.json            # 发现：全屏 OCR 列文字+坐标（LLM 读 JSON）
+uv run python gui_calibrate.py locate 保存 --verify --json-out l.json
+#   定位：按文字找按钮 -> transform 到屏幕坐标 -> 红点复核 click_error
 ```
 
 - **agent 读结果统一加 `--json-out <file>`**：写 UTF-8 JSON 到文件，用 `read` 工具读（免 git-bash 码页乱码）；stdout 只回 `OK -> file`。每个子命令都支持。
@@ -202,7 +219,8 @@ python screen_reminder.py status / stop
 ```
 
 - **守护自动感知**：daemon 每 500ms 读 pi session 的 `automation_*`/`cua_*` 调用，自动亮+变文字+变颜色，agent **零注意力成本**；30s 无操作自动隐藏；**聊天不触发**（offset 跳到文件尾，只对新调用生效）。
-- 分支 B 重放**自动亮提醒**（player 内置，无需调用方管）；pyautogui/pynput 包装见 `screen_reminder_auto.py`。
+- 分支 B 重放**自动亮提醒**（player 内置，无需调用方管）；pywinauto 脚本包装见 `screen_reminder_auto.py`（**当前环境未装 pywinauto，该路径暂不可用**；旧文档写的 pyautogui/pynput 包装已废弃，本机两者均未安装）。
+- **优先用 agent 工具 `screen_reminder`**（`start`/`set`/`status`/`stop`），零输出零等待；只有需要脚本化时才走 `python ~/.pi/agent/scripts/screen_reminder.py <cmd>`。
 - `set` 零输出零等待，勿解析其 stdout；daemon 自管生命周期。
 
 ### 6.2 与用户交互
@@ -237,3 +255,6 @@ python screen_reminder.py status / stop
 - 重放点空 → 句柄失效，player 会按标题重找；确认窗口标题没变。
 - `wait_for` 超时 → target 写错或界面未渲染完，加大 timeout 或改 kind。
 - 提醒不亮 → daemon 未启动（`python screen_reminder.py start`）；聊天不会亮（正常）。
+- **MCP `double_click` 报 `win32api.GetDoubleClickTime` 缺失** → 服务端 bug（本机 pywin32 无该函数），与坐标/批准无关。兜底：ctypes `SetCursorPos(x,y)` + `mouse_event(0x02/0x04)×2`；单次点击不受影响。
+- **终端中文乱码**（`企业微信`→`乱码`）→ 不用 stdout 读结果：用 `gui_calibrate --json-out <file>` 写 UTF-8 文件，再用 `read` 工具读。
+- **鼠标/键盘被 HITL 拦截** → `approve_automation(duration_minutes=10)` 开批准窗口期后重试。
